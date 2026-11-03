@@ -130,8 +130,10 @@ Revision 1 одобрена пользователем командой выпо
 
 На playtest игрок, не глядя на HUD, правильно определяет момент кипения и называет действие, которое прекращает свист.
 
-## Open decisions for user
+## Resolved decisions for Revision 1
 
-1. Характер свиста: реалистичный, мягкий или намеренно комедийный?
-2. Свист прекращается сразу после выключения плиты или коротко затухает?
-3. Нужно ли полностью синхронизировать старт пара и звука на одном пороге 99 °C?
+1. Initial tone: neutral procedural whistle used as a reviewable reference; the user may request a sourced CC0 replacement after the audio playtest.
+2. Stop behavior: immediate stop within one physics frame, without fade.
+3. Steam and whistle use one shared threshold of 99 °C and require active heating.
+
+Audio character, volume and range remain subject to the mandatory user playtest before merge.
