@@ -338,5 +338,6 @@ mesh = SubResource("BoxMesh_window_frame_vertical")
 
 [node name="RoomFloodWater" type="MeshInstance3D" parent="." unique_id=1684140374]
 visible = false
+cast_shadow = 0
 material_override = ExtResource("9_85g3d")
 mesh = SubResource("BoxMesh_bsm84")
