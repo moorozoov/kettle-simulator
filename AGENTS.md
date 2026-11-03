@@ -23,15 +23,23 @@ small Steam release.
 
 ## Agent team workflow
 
+Use the **product analyst** before development when the user asks for feature
+ideas, game improvements, product analysis, feature refinement, or a detailed
+specification. The product analyst may propose and refine work, but may not
+approve a feature or send it to development. Only the user can set a proposal
+to `Approved`.
+
 When the user asks to implement or fix a non-trivial gameplay change and asks
 for the agent team, orchestrate the following roles:
 
-1. **Godot developer** — inspect the relevant scenes and scripts, implement
+1. **Product analyst** — confirm that the feature description is approved and
+   implementation-ready. Skip this step for a narrowly defined bug fix.
+2. **Godot developer** — inspect the relevant scenes and scripts, implement
    the smallest complete change, and run available checks.
-2. **QA engineer** — after implementation, inspect the diff read-only, execute
+3. **QA engineer** — after implementation, inspect the diff read-only, execute
    automated checks, identify regressions, and produce a short manual playtest
    checklist with observable expected results.
-3. **PR reviewer** — after implementation, inspect the final diff read-only for
+4. **PR reviewer** — after implementation, inspect the final diff read-only for
    correctness, scene-path breakage, duplicated resources, unsafe shared
    materials, missing validation, and scope creep.
 
@@ -43,6 +51,25 @@ remaining manual checks to the user.
 
 Use the repository workflows under `.agents/skills/` when their descriptions
 match the task.
+
+## Product approval workflow
+
+- Store detailed proposals under `docs/features/proposals/` using
+  `docs/features/FEATURE_TEMPLATE.md`.
+- Use exactly one status: `Proposed`, `In review`, `Needs revision`, `Approved`,
+  `Rejected`, `In development`, or `Done`.
+- Present proposals to the user before any implementation begins.
+- Treat silence, partial agreement, or approval of an idea as insufficient
+  approval of the detailed specification.
+- Only the user's explicit approval may change a proposal to `Approved`.
+- Approval applies to one numbered revision. Any material edit to the summary,
+  detailed behavior, acceptance criteria, non-goals, or open decisions must
+  increment the revision and reset the status to `In review`.
+- Let the user review and request edits to the description before development.
+- Never implement `Proposed`, `In review`, `Needs revision`, or `Rejected`
+  features.
+- Keep rejected proposals for decision history unless the user asks to delete
+  them.
 
 ## Git workflow
 
