@@ -5,6 +5,7 @@
 [ext_resource type="Material" uid="uid://cw13lmpf2l22q" path="res://assets/materials/simple/black_plastic/black_plastic.tres" id="2_xyd6x"]
 [ext_resource type="Material" path="res://assets/materials/water/water_particles.tres" id="4_cetu4"]
 [ext_resource type="Material" uid="uid://dj17jf06gl6gu" path="res://assets/materials/water/water_universal.tres" id="4_xyd6x"]
+[ext_resource type="AudioStream" path="res://assets/audio/kettle_whistle/kettle_whistle_loop.ogg" id="5_whistle"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_l2qtu"]
 material = ExtResource("1_wwbax")
@@ -164,6 +165,11 @@ lifetime = 1.5
 randomness = 0.5
 process_material = SubResource("ParticleProcessMaterial_spout")
 draw_pass_1 = SubResource("QuadMesh_pr2ay")
+
+[node name="WhistlePlayer" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("5_whistle")
+autoplay = false
+max_distance = 8.0
 
 [node name="KettleInteraction" type="StaticBody3D" parent="." unique_id=943320083]
 script = ExtResource("1_oy8w8")
