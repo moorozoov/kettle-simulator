@@ -11,7 +11,7 @@ feature proposal and delivery status in this document.
 | Work item | Approved revision | Delivery status | Owner role | Confirmed target | Dependencies | PR | Blocker | Next action |
 |---|---:|---|---|---|---|---|---|---|
 | Smooth flood progression | Legacy scope | In review | Developer / QA | — | Manual Godot playtest | [#2](https://github.com/moorozoov/kettle-simulator/pull/2) | Branch requires reconciliation with current `main`; no confirmed delivery date | Confirm scope, reconcile branch, run CI and manual transition check |
-| Project and design agent setup | Approved by user | In progress | Lead agent | — | Agent workflow in `main` | Pending | No blocker | Complete validation and open PR |
+| Project and design agent setup | Approved by user | In review | Lead agent | — | Agent workflow in `main` | [#4](https://github.com/moorozoov/kettle-simulator/pull/4) | No blocker | Wait for CI and explicit user merge approval |
 
 ## Upcoming decisions
 
