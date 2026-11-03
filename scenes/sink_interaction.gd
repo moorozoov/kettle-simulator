@@ -5,8 +5,11 @@ extends StaticBody3D
 # Сколько воды помещается на столе до начала стекания.
 @export var floor_spill_threshold: float = 0.75
 
-# После этого объёма лужа занимает почти весь пол.
-@export var room_flood_threshold: float = 10.0
+# К этому объёму лужа занимает весь пол.
+@export var floor_puddle_full_threshold: float = 10.0
+
+# После этого объёма начинает подниматься уровень воды.
+@export var room_flood_threshold: float = 12.0
 
 # Внутренняя площадь пола: 5.9 x 5.9 м.
 @export var room_floor_area_m2: float = 34.81
@@ -173,7 +176,7 @@ func _update_spill_visuals() -> void:
 	)
 
 	var puddle_range: float = maxf(
-		room_flood_threshold
+		floor_puddle_full_threshold
 		- floor_spill_threshold,
 		0.01
 	)
