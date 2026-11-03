@@ -18,8 +18,8 @@ signal water_spilled(amount: float)
 @export var evaporation_speed: float = 0.04
 @export var burn_temperature: float = 220.0
 @export var boiling_feedback_temperature: float = 99.0
-@export var whistle_volume_db: float = -8.0
-@export var whistle_max_distance: float = 8.0
+@export var whistle_volume_db: float = -20.0
+@export var whistle_max_distance: float = 5.0
 
 var temperature: float = 20.0
 var is_held: bool = false

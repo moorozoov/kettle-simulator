@@ -21,13 +21,26 @@ fi
 
 echo "Using Godot ${godot_version}."
 echo "Checking project import and script parsing with ${godot_command}..."
-"${godot_command}" --headless --editor --path "${project_dir}" --quit
+"${godot_command}" \
+  --headless \
+  --audio-driver Dummy \
+  --editor \
+  --path "${project_dir}" \
+  --quit
 
 echo "Instantiating the main scene for a short headless smoke test..."
 "${godot_command}" \
   --headless \
+  --audio-driver Dummy \
   --path "${project_dir}" \
   --script res://scripts/smoke_test.gd
+
+echo "Running automated gameplay regression checks..."
+"${godot_command}" \
+  --headless \
+  --audio-driver Dummy \
+  --path "${project_dir}" \
+  --script res://scripts/gameplay_regression_test.gd
 
 echo "Godot project check passed."
 

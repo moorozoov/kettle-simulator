@@ -29,20 +29,31 @@ Thresholds 9.9/10/11.9/12 L, overflow under the faucet, faucet without kettle, s
 
 ### PO acceptance
 
-- The player recognizes boiling without reading the HUD.
-- Whistle and steam communicate one consistent state.
-- The loop is understandable, audible at useful range and not irritating across repeated cycles.
+- A visible metal whistle on the spout explains the source of the sound.
+- The player recognizes boiling without reading the HUD; whistle and steam communicate one consistent state.
+- The softer sound is audible near the stove without dominating the scene (default `-20 dB`, maximum distance `5 m`).
+- The complete `boil → pick up → place` loop has no dead end.
+- The player can understand placement on the burner, sink area and countertop without developer guidance.
 
 ### PM acceptance
 
-- Approved Revision 1 is implemented in one focused PR.
+- Approved Revision 2 is implemented in one focused PR; rejected Revision 1 is not merged as-is.
+- Physical whistle, replacement audio and three placement targets are tracked as separate deliverables.
 - Audio origin/license is recorded.
-- CI, independent QA, PR review and user audio playtest pass.
-- Water, heating and interaction regressions are absent.
+- QA owns automated or agent-run x10 transition tests and water/heating/interaction regression.
+- CI, independent QA and PR review have no blocker/high/medium findings.
+- Owner acceptance is limited to no more than three short sensory actions and is performed only after QA passes.
+- Merge requires separate explicit owner approval.
 
 ### QA focus
 
-99 °C boundary, active heat predicate, immediate stop on heat off/pickup/refill/empty/burned, repeated toggles, no stacked playback, distance attenuation, loop seam, regression of water systems.
+Physical-whistle visibility and attachment; 99 °C/active-heat predicate; `-20 dB` and `5 m` defaults; immediate stop on heat off/pickup/refill/empty/burned; no stacked playback or loop seam; valid placement on burner/sink/countertop; invalid and occupied-target rejection; collision and interaction restoration; correct station assignment; x10 burner pickup/place, x10 countertop pickup/place, x10 burner toggles; five restarts; overflow, faucet, puddle and flooding regression. Repetitive runs are QA-owned, not owner-owned.
+
+### Owner acceptance — maximum three actions
+
+1. Boil water once and assess the visible whistle and sound level.
+2. Pick the kettle up and place it on the countertop.
+3. Return it to the burner and confirm that boiling feedback resumes correctly.
 
 ## M2 — First Playable Goal
 
@@ -144,6 +155,7 @@ Deterministic score, transparent bonuses/penalties, best-result persistence, cor
 ## Execution status
 
 - M0 automated and manual acceptance: passed.
-- M1 automated CI and audio-file technical checks: passed.
-- M1 audible behavior: pending user Godot playtest.
+- M1 Revision 1: rejected by the owner (no physical whistle, incomplete placement loop, loud sound and excessive owner QA burden).
+- M1 Revision 2 corrective work: in progress; previous CI/audio checks are insufficient for acceptance.
+- M1 QA evidence and three-action owner acceptance: pending implementation and independent QA.
 - M2–M6: test scenarios prepared but not runnable before implementation.

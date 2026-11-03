@@ -9,7 +9,7 @@ Only user-confirmed dates are commitments. Feature approval status is tracked se
 
 | Work item | Product status | Delivery status | Owner role | Confirmed target | Dependencies | PR | Blocker | Next action |
 |---|---|---|---|---|---|---|---|---|
-| Kettle whistle | Approved, Revision 1 | In progress | Designer / Developer | — | CC0 audio preparation | Feature branch | No blocker | Prepare audio, implement shared feedback predicate and run checks |
+| Physical whistle and complete boiling loop | Approved, Revision 2 | In progress | Product / Designer / Developer / QA | — | Softer audio; discrete placement targets | PR #6 revision required | Owner rejected Revision 1: no physical whistle, placement dead end, loud sound, excessive owner QA | Add physical whistle, replace audio, implement burner/sink/countertop placement and QA-owned x10 runs |
 | First playable goal | Roadmap approved; proposal pending | Planned | Product / Project | — | M1 complete | — | Detailed Revision 1 required | Prepare proposal while M1 is in review |
 
 ## Completed milestones
@@ -22,13 +22,16 @@ Only user-confirmed dates are commitments. Feature approval status is tracked se
 
 ## Current forecast
 
-- **M1 Readable Feedback:** in progress; no confirmed target date.
+- **M1 Readable Feedback:** at risk while Revision 2 corrective work is in progress; no confirmed target date.
 - **M2 First Playable Goal:** planned after M1; proposal to be prepared.
 - No calendar commitment exists.
 
 ## Next gates
 
-1. Integrate and verify the CC0 whistle asset.
-2. CI, independent QA and PR review.
-3. User audio playtest: character, volume, range and repeated loop.
-4. Explicit user merge approval.
+1. Add a visible metal whistle on the spout.
+2. Replace the loud reference with a softer sound at `-20 dB` and `5 m`.
+3. Implement valid placement on burner, sink area and countertop.
+4. QA runs automated/agent-owned x10 pickup, placement and toggle scenarios.
+5. CI, independent QA and PR review.
+6. Owner performs only three short acceptance actions.
+7. Explicit owner merge approval.

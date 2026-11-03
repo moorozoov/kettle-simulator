@@ -16,7 +16,7 @@
 - **Author:** Kettle Simulator project
 - **Source:** Procedurally generated for this repository
 - **License:** Original project asset; no third-party content
-- **Modifications:** 4-second mono Ogg Vorbis loop generated from layered periodic tones at 48 kHz
+- **Modifications:** Soft 4-second mono Ogg Vorbis loop generated from original modulated tones at 48 kHz
 - **Local path:** `assets/audio/kettle_whistle/kettle_whistle_loop.ogg`
 
 The external CC0 Freesound candidates remain design references only and are not distributed with the project.
