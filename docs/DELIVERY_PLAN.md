@@ -1,7 +1,7 @@
 # Kettle Simulator — delivery plan
 
 **Updated:** 2026-11-03  
-**Status:** In review
+**Status:** Approved
 
 Подтверждённых календарных сроков нет. Оценки ниже отражают размер и риск работы, а не обещанные даты.
 
