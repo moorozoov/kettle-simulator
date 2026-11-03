@@ -11,6 +11,12 @@ extends StaticBody3D
 # После этого объёма начинает подниматься уровень воды.
 @export var room_flood_threshold: float = 12.0
 
+# Финальный масштаб круглой лужи должен перекрывать диагональ комнаты.
+@export var floor_puddle_cover_scale: float = 6.0
+
+# До этой высоты слой затопления перекрывает лужу без резкой подмены.
+@export var puddle_blend_height: float = 0.02
+
 # Внутренняя площадь пола: 5.9 x 5.9 м.
 @export var room_floor_area_m2: float = 34.81
 
@@ -25,6 +31,7 @@ var water_is_on: bool = false
 var placed_kettle: StaticBody3D
 
 var unattended_spilled_water: float = 0.0
+var floor_puddle_start_position: Vector3
 
 @onready var kettle_point: Marker3D = $"../KettlePoint"
 @onready var water_stream: MeshInstance3D = $"../WaterStream"
@@ -47,6 +54,7 @@ func _ready() -> void:
 	table_drip.visible = false
 	floor_puddle.visible = false
 	room_flood_water.visible = false
+	floor_puddle_start_position = floor_puddle.position
 
 
 func _physics_process(delta: float) -> void:
@@ -192,11 +200,11 @@ func _update_spill_visuals() -> void:
 		linear_floor_ratio
 	)
 
-	# Радиус исходного цилиндра равен 0.75 м.
-	# Scale 4 даёт лужу диаметром около 6 метров.
+	# Радиус исходного цилиндра равен 0.75 м. Финальный размер
+	# перекрывает не только ширину комнаты, но и её диагональ.
 	var floor_size: float = lerpf(
 		0.08,
-		4.0,
+		maxf(floor_puddle_cover_scale, 0.08),
 		floor_ratio
 	)
 
@@ -207,15 +215,22 @@ func _update_spill_visuals() -> void:
 	)
 
 	table_drip.visible = water_reached_floor
-	floor_puddle.visible = (
-		water_reached_floor
-		and not room_is_flooding
+	floor_puddle.visible = water_reached_floor
+
+	var floor_center: Vector3 = Vector3(
+		0.0,
+		floor_puddle_start_position.y,
+		0.0
+	)
+	floor_puddle.position = floor_puddle_start_position.lerp(
+		floor_center,
+		floor_ratio
 	)
 
 	floor_puddle.scale = Vector3(
 		floor_size,
 		1.0,
-		floor_size * 0.85
+		floor_size
 	)
 
 	var flood_water: float = maxf(
@@ -228,6 +243,14 @@ func _update_spill_visuals() -> void:
 	)
 
 	room_flood_water.visible = room_is_flooding
+
+	# Не убираем старую лужу в первый кадр затопления: новый слой
+	# сначала незаметно поднимается поверх неё.
+	if (
+		room_is_flooding
+		and flood_height >= maxf(puddle_blend_height, 0.0)
+	):
+		floor_puddle.visible = false
 
 	if room_is_flooding:
 		# Не допускаем нулевой толщины меша в первый кадр.
