@@ -8,8 +8,12 @@ extends StaticBody3D
 # После этого объёма лужа занимает почти весь пол.
 @export var room_flood_threshold: float = 10.0
 
-# Объём, соответствующий максимальной визуальной высоте.
-@export var maximum_visual_flood: float = 100.0
+# Внутренняя площадь пола: 5.9 x 5.9 м.
+@export var room_floor_area_m2: float = 34.81
+
+# Ускоряет только визуальный подъём воды для игрового темпа.
+# При значении 1.0 высота соответствовала бы реальному объёму.
+@export var flood_visual_multiplier: float = 600.0
 
 # Максимальная визуальная высота воды в комнате.
 @export var maximum_flood_height: float = 0.35
@@ -138,10 +142,16 @@ func _spill_unattended_water(amount: float) -> void:
 
 
 func _update_spill_visuals() -> void:
-	var counter_ratio: float = clampf(
-		unattended_spilled_water / floor_spill_threshold,
+	var linear_counter_ratio: float = clampf(
+		unattended_spilled_water
+		/ maxf(floor_spill_threshold, 0.01),
 		0.0,
 		1.0
+	)
+	var counter_ratio: float = smoothstep(
+		0.0,
+		1.0,
+		linear_counter_ratio
 	)
 
 	var counter_size: float = lerpf(
@@ -162,15 +172,21 @@ func _update_spill_visuals() -> void:
 		0.0
 	)
 
-	var puddle_range: float = (
+	var puddle_range: float = maxf(
 		room_flood_threshold
-		- floor_spill_threshold
+		- floor_spill_threshold,
+		0.01
 	)
 
-	var floor_ratio: float = clampf(
+	var linear_floor_ratio: float = clampf(
 		floor_water / puddle_range,
 		0.0,
 		1.0
+	)
+	var floor_ratio: float = smoothstep(
+		0.0,
+		1.0,
+		linear_floor_ratio
 	)
 
 	# Радиус исходного цилиндра равен 0.75 м.
@@ -204,35 +220,50 @@ func _update_spill_visuals() -> void:
 		- room_flood_threshold,
 		0.0
 	)
-
-	var flood_range: float = maxf(
-		maximum_visual_flood
-		- room_flood_threshold,
-		0.01
-	)
-
-	var flood_ratio: float = clampf(
-		flood_water / flood_range,
-		0.0,
-		1.0
-	)
-
-	var flood_height: float = lerpf(
-		0.01,
-		maximum_flood_height,
-		flood_ratio
+	var flood_height: float = _calculate_flood_height(
+		flood_water
 	)
 
 	room_flood_water.visible = room_is_flooding
 
 	if room_is_flooding:
+		# Не допускаем нулевой толщины меша в первый кадр.
+		var visible_height: float = maxf(
+			flood_height,
+			0.004
+		)
+
 		room_flood_water.scale = Vector3(
 			1.0,
-			flood_height,
+			visible_height,
 			1.0
 		)
 
 		room_flood_water.position.y = (
-			flood_height * 0.5
+			visible_height * 0.5
 			+ 0.005
 		)
+
+
+func _calculate_flood_height(flood_water_liters: float) -> float:
+	var safe_room_area: float = maxf(
+		room_floor_area_m2,
+		0.01
+	)
+	var visual_water_liters: float = (
+		flood_water_liters
+		* maxf(flood_visual_multiplier, 0.0)
+	)
+
+	# 1 м³ = 1000 литров; высота = объём / площадь.
+	var calculated_height: float = (
+		visual_water_liters
+		/ 1000.0
+		/ safe_room_area
+	)
+
+	return clampf(
+		calculated_height,
+		0.0,
+		maxf(maximum_flood_height, 0.0)
+	)
