@@ -1,6 +1,6 @@
 # Feature proposal — Kettle whistle and audio feedback
 
-**Status:** In review  
+**Status:** Approved  
 **Revision:** 1  
 **Priority:** P0  
 **Estimated size:** M  
@@ -10,7 +10,7 @@
 
 Добавить пространственный свист чайника, который сообщает о кипении без чтения HUD и прекращается при любом состоянии, в котором чайник больше не должен свистеть.
 
-Эта спецификация не разрешает разработку до явного одобрения Revision 1 пользователем.
+Revision 1 одобрена пользователем командой выполнять утверждённый roadmap.
 
 ## Problem and value
 
