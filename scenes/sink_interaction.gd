@@ -215,7 +215,9 @@ func _update_spill_visuals() -> void:
 	)
 
 	table_drip.visible = water_reached_floor
-	floor_puddle.visible = water_reached_floor
+	# Never render both transparent water surfaces at once: their alpha
+	# would stack and make the water change colour during the transition.
+	floor_puddle.visible = water_reached_floor and not room_is_flooding
 
 	var floor_center: Vector3 = Vector3(
 		0.0,
