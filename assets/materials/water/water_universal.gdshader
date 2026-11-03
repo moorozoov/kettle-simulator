@@ -10,11 +10,28 @@ uniform float wave_scale : hint_range(0.1, 20.0) = 4.0;
 uniform float wave_speed : hint_range(0.0, 2.0) = 0.18;
 uniform float normal_strength : hint_range(0.0, 2.0) = 0.35;
 uniform float brightness_variation : hint_range(0.0, 0.5) = 0.08;
+uniform float world_uv_scale : hint_range(0.01, 2.0) = 0.17;
 uniform sampler2D noise_texture : repeat_enable, filter_linear_mipmap_anisotropic;
 
+varying vec3 water_world_position;
+varying vec3 water_world_normal;
+
+void vertex() {
+	water_world_position = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	water_world_normal = normalize(MODEL_NORMAL_MATRIX * NORMAL);
+}
+
 void fragment() {
-	vec2 uv_a = UV * wave_scale + vec2(TIME * wave_speed, TIME * wave_speed * 0.37);
-	vec2 uv_b = UV * wave_scale * 1.41 + vec2(-TIME * wave_speed * 0.53, TIME * wave_speed * 0.71);
+	vec2 surface_uv = UV;
+
+	// Horizontal water surfaces share world-space coordinates, so changing
+	// from the puddle mesh to the flood mesh cannot change the wave pattern.
+	if (abs(water_world_normal.y) > 0.5) {
+		surface_uv = water_world_position.xz * world_uv_scale;
+	}
+
+	vec2 uv_a = surface_uv * wave_scale + vec2(TIME * wave_speed, TIME * wave_speed * 0.37);
+	vec2 uv_b = surface_uv * wave_scale * 1.41 + vec2(-TIME * wave_speed * 0.53, TIME * wave_speed * 0.71);
 
 	float noise_a = texture(noise_texture, uv_a).r;
 	float noise_b = texture(noise_texture, uv_b).r;
