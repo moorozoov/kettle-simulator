@@ -5,9 +5,6 @@ extends StaticBody3D
 # Сколько воды помещается на столе до начала стекания.
 @export var floor_spill_threshold: float = 0.75
 
-# Сколько литров нужно для максимального размера лужи на полу.
-@export var maximum_floor_spill: float = 3.0
-
 # После этого объёма лужа занимает почти весь пол.
 @export var room_flood_threshold: float = 10.0
 
@@ -42,6 +39,7 @@ func _ready() -> void:
 	counter_puddle.visible = false
 	table_drip.visible = false
 	floor_puddle.visible = false
+	room_flood_water.visible = false
 
 
 func _physics_process(delta: float) -> void:

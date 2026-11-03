@@ -74,11 +74,57 @@ radial_segments = 48
 
 [sub_resource type="BoxMesh" id="BoxMesh_nf0fm"]
 material = ExtResource("10_choun")
-size = Vector3(6, 3, 0.1)
+size = Vector3(3.7, 3, 0.1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_1ucj1"]
 material = ExtResource("10_choun")
 size = Vector3(0.1, 3, 6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_back_right"]
+material = ExtResource("10_choun")
+size = Vector3(0.7, 3, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_back_window_band"]
+material = ExtResource("10_choun")
+size = Vector3(1.6, 1.1, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_back_window_top"]
+material = ExtResource("10_choun")
+size = Vector3(1.6, 0.9, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_front_side"]
+material = ExtResource("10_choun")
+size = Vector3(2.4, 3, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_front_top"]
+material = ExtResource("10_choun")
+size = Vector3(1.2, 0.8, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_door"]
+material = ExtResource("3_tipki")
+size = Vector3(1.1, 2.2, 0.08)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ceiling"]
+material = ExtResource("10_choun")
+size = Vector3(6, 0.1, 6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_window"]
+transparency = 1
+albedo_color = Color(0.32, 0.58, 0.72, 0.42)
+metallic = 0.15
+roughness = 0.08
+
+[sub_resource type="BoxMesh" id="BoxMesh_window"]
+material = SubResource("StandardMaterial3D_window")
+size = Vector3(1.6, 1, 0.02)
+
+[sub_resource type="BoxMesh" id="BoxMesh_window_frame_horizontal"]
+material = ExtResource("4_85g3d")
+size = Vector3(1.8, 0.06, 0.06)
+
+[sub_resource type="BoxMesh" id="BoxMesh_window_frame_vertical"]
+material = ExtResource("4_85g3d")
+size = Vector3(0.06, 1.1, 0.06)
 
 [sub_resource type="BoxMesh" id="BoxMesh_bsm84"]
 material = ExtResource("9_85g3d")
@@ -220,17 +266,75 @@ text = "+"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Backwall" type="MeshInstance3D" parent="." unique_id=1125840348]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -3)
+[node name="RoomGeometry" type="Node3D" parent="."]
+
+[node name="BackWallLeft" type="MeshInstance3D" parent="RoomGeometry" unique_id=1125840348]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.15, 1.5, -3)
 mesh = SubResource("BoxMesh_nf0fm")
 
-[node name="Leftwall" type="MeshInstance3D" parent="." unique_id=508627058]
+[node name="BackWallRight" type="MeshInstance3D" parent="RoomGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.65, 1.5, -3)
+mesh = SubResource("BoxMesh_back_right")
+
+[node name="BackWallBelowWindow" type="MeshInstance3D" parent="RoomGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.55, -3)
+mesh = SubResource("BoxMesh_back_window_band")
+
+[node name="BackWallAboveWindow" type="MeshInstance3D" parent="RoomGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 2.55, -3)
+mesh = SubResource("BoxMesh_back_window_top")
+
+[node name="LeftWall" type="MeshInstance3D" parent="RoomGeometry" unique_id=508627058]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1.5, 0)
 mesh = SubResource("BoxMesh_1ucj1")
 
-[node name="Rightwall" type="MeshInstance3D" parent="." unique_id=1210251424]
+[node name="RightWall" type="MeshInstance3D" parent="RoomGeometry" unique_id=1210251424]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1.5, 0)
 mesh = SubResource("BoxMesh_1ucj1")
+
+[node name="FrontWallLeft" type="MeshInstance3D" parent="RoomGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 1.5, 3)
+mesh = SubResource("BoxMesh_front_side")
+
+[node name="FrontWallRight" type="MeshInstance3D" parent="RoomGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 1.5, 3)
+mesh = SubResource("BoxMesh_front_side")
+
+[node name="FrontWallAboveDoor" type="MeshInstance3D" parent="RoomGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 3)
+mesh = SubResource("BoxMesh_front_top")
+
+[node name="Door" type="MeshInstance3D" parent="RoomGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 2.94)
+mesh = SubResource("BoxMesh_door")
+
+[node name="Ceiling" type="MeshInstance3D" parent="RoomGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.05, 0)
+mesh = SubResource("BoxMesh_ceiling")
+
+[node name="Window" type="MeshInstance3D" parent="RoomGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 1.6, -2.94)
+mesh = SubResource("BoxMesh_window")
+
+[node name="WindowFrameTop" type="MeshInstance3D" parent="RoomGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 2.13, -2.9)
+mesh = SubResource("BoxMesh_window_frame_horizontal")
+
+[node name="WindowFrameBottom" type="MeshInstance3D" parent="RoomGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 1.07, -2.9)
+mesh = SubResource("BoxMesh_window_frame_horizontal")
+
+[node name="WindowFrameLeft" type="MeshInstance3D" parent="RoomGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.67, 1.6, -2.9)
+mesh = SubResource("BoxMesh_window_frame_vertical")
+
+[node name="WindowFrameCenter" type="MeshInstance3D" parent="RoomGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 1.6, -2.9)
+mesh = SubResource("BoxMesh_window_frame_vertical")
+
+[node name="WindowFrameRight" type="MeshInstance3D" parent="RoomGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.33, 1.6, -2.9)
+mesh = SubResource("BoxMesh_window_frame_vertical")
 
 [node name="RoomFloodWater" type="MeshInstance3D" parent="." unique_id=1684140374]
 visible = false
