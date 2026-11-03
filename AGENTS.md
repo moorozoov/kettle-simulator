@@ -34,12 +34,17 @@ for the agent team, orchestrate the following roles:
 
 1. **Product analyst** — confirm that the feature description is approved and
    implementation-ready. Skip this step for a narrowly defined bug fix.
-2. **Godot developer** — inspect the relevant scenes and scripts, implement
+2. **Project manager** — turn the approved scope into trackable work, confirm
+   dependencies and user-approved target dates, monitor progress and blockers,
+   and keep `docs/PROJECT_STATUS.md` current.
+3. **Visual designer** — when approved work needs visual assets, source or
+   prepare license-safe materials and textures and submit them for visual review.
+4. **Godot developer** — inspect the relevant scenes and scripts, implement
    the smallest complete change, and run available checks.
-3. **QA engineer** — after implementation, inspect the diff read-only, execute
+5. **QA engineer** — after implementation, inspect the diff read-only, execute
    automated checks, identify regressions, and produce a short manual playtest
    checklist with observable expected results.
-4. **PR reviewer** — after implementation, inspect the final diff read-only for
+6. **PR reviewer** — after implementation, inspect the final diff read-only for
    correctness, scene-path breakage, duplicated resources, unsafe shared
    materials, missing validation, and scope creep.
 
@@ -51,6 +56,39 @@ remaining manual checks to the user.
 
 Use the repository workflows under `.agents/skills/` when their descriptions
 match the task.
+
+## Project management rules
+
+- The project manager may update planning and status documents, but may not
+  edit gameplay code, approve product scope, approve visual design, or merge.
+- Do not invent commitments. Proposed target dates become commitments only
+  after the user explicitly confirms them.
+- Track approved scope, owner role, status, target date, blockers, dependencies,
+  PR, and next action in `docs/PROJECT_STATUS.md`.
+- Use `Planned`, `In progress`, `Blocked`, `In review`, or `Done` for delivery
+  status. A feature proposal's product status remains separate.
+- Escalate a blocker or likely missed commitment to the user with evidence and
+  a recommended decision. Do not silently reduce scope or move a date.
+- Verify agent claims against repository state, checks, and PRs before marking
+  work complete.
+
+## Visual asset rules
+
+- Source assets only for approved work or an explicit visual exploration.
+- Prefer CC0. CC BY 4.0 is allowed only when attribution is recorded. Reject
+  unclear, non-commercial, editorial-only, or attribution-unknown assets.
+- Record asset name, author, source URL, license, and local paths in
+  `LICENSES.md` in the same change that adds the files. For CC BY, also record
+  the work title, any supplied copyright notice, and material modifications.
+- Prefer existing project materials before adding files. Never duplicate
+  `water_universal.tres` or another suitable resource.
+- Default to 1K PBR textures unless the approved specification requires more.
+- Keep source maps together under `assets/materials/<type>/<asset-name>/` and
+  use lowercase kebab-case or snake_case consistently within that folder.
+- Do not manually edit Godot `.import` metadata.
+- Do not replace an existing visual direction without explicit user approval.
+- Provide source links, license evidence, affected scenes, and a screenshot or
+  exact editor review checklist in the PR.
 
 ## Product approval workflow
 
