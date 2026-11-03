@@ -1,0 +1,173 @@
+[gd_scene format=3 uid="uid://ds8sglaiswekl"]
+
+[ext_resource type="Script" uid="uid://goirlyn6bdlx" path="res://scripts/interactions/kettle_interaction.gd" id="1_oy8w8"]
+[ext_resource type="Material" uid="uid://bxxvk0h6wquo2" path="res://assets/materials/simple/stainless_steel/stainless_steel.tres" id="1_wwbax"]
+[ext_resource type="Material" uid="uid://cw13lmpf2l22q" path="res://assets/materials/simple/black_plastic/black_plastic.tres" id="2_xyd6x"]
+[ext_resource type="Material" path="res://assets/materials/water/water_particles.tres" id="4_cetu4"]
+[ext_resource type="Material" uid="uid://dj17jf06gl6gu" path="res://assets/materials/water/water_universal.tres" id="4_xyd6x"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_l2qtu"]
+material = ExtResource("1_wwbax")
+top_radius = 0.19
+bottom_radius = 0.25
+height = 0.38
+radial_segments = 32
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_fkk8u"]
+material = ExtResource("1_wwbax")
+top_radius = 0.15
+bottom_radius = 0.18
+height = 0.035
+
+[sub_resource type="SphereMesh" id="SphereMesh_l2qtu"]
+material = ExtResource("2_xyd6x")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pgvm0"]
+material = ExtResource("1_wwbax")
+top_radius = 0.06
+bottom_radius = 0.11
+height = 0.32
+
+[sub_resource type="TorusMesh" id="TorusMesh_l2qtu"]
+material = ExtResource("2_xyd6x")
+inner_radius = 0.16
+outer_radius = 0.21
+rings = 24
+ring_segments = 12
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_l2qtu"]
+direction = Vector3(0, 1, 0)
+spread = 20.0
+initial_velocity_min = 0.14999999
+initial_velocity_max = 0.35
+gravity = Vector3(0, 0.15, 0)
+scale_min = 0.39999998
+scale_max = 1.1999999
+color = Color(1, 1, 1, 0.35)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_steam"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 1, 1, 0.35)
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_fkk8u"]
+material = SubResource("StandardMaterial3D_steam")
+size = Vector2(0.035, 0.07)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fkk8u"]
+direction = Vector3(0, 1, 0)
+spread = 30.0
+initial_velocity_min = 0.099999994
+initial_velocity_max = 0.29999998
+gravity = Vector3(0, 0.1, 0)
+scale_min = 0.7
+scale_max = 1.8
+color = Color(0.36078432, 0.36078432, 0.36078432, 0.65882355)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nf0fm"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.24705882, 0.24705882, 0.24705882, 0.5921569)
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_pgvm0"]
+material = SubResource("StandardMaterial3D_nf0fm")
+size = Vector2(0.11, 0.11)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_xyd6x"]
+direction = Vector3(0, 0.3, 1)
+spread = 55.0
+initial_velocity_min = 0.19999999
+initial_velocity_max = 0.45
+gravity = Vector3(0, -2.5, 0)
+scale_min = 0.39999998
+scale_max = 1.1999999
+color = Color(0.30588236, 0.73333335, 1, 0.65882355)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_spout"]
+direction = Vector3(1, -0.15, 0)
+spread = 12.0
+initial_velocity_min = 0.45
+initial_velocity_max = 0.7
+gravity = Vector3(0, -2.5, 0)
+scale_min = 0.7
+scale_max = 1.2
+color = Color(0.30588236, 0.73333335, 1, 0.65882355)
+
+[sub_resource type="QuadMesh" id="QuadMesh_cetu4"]
+material = ExtResource("4_cetu4")
+size = Vector2(0.04, 0.06)
+
+[sub_resource type="QuadMesh" id="QuadMesh_pr2ay"]
+material = ExtResource("4_cetu4")
+size = Vector2(0.035, 0.07)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_l2qtu"]
+height = 0.26
+radius = 0.48
+
+[node name="Kettle" type="Node3D" unique_id=70286665]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=924083375]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.21, 0)
+mesh = SubResource("CylinderMesh_l2qtu")
+
+[node name="Lid" type="MeshInstance3D" parent="." unique_id=1453241208]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.415, 0)
+mesh = SubResource("CylinderMesh_fkk8u")
+
+[node name="LidHandle" type="MeshInstance3D" parent="." unique_id=2027511116]
+transform = Transform3D(0.06, 0, 0, 0, 0.06, 0, 0, 0, 0.06, 0, 0.46, 0)
+mesh = SubResource("SphereMesh_l2qtu")
+
+[node name="Spout" type="MeshInstance3D" parent="." unique_id=1945743882]
+transform = Transform3D(0.49999997, 0.86602545, 0, -0.86602545, 0.49999997, 0, 0, 0, 1, 0.25, 0.29, 0)
+mesh = SubResource("CylinderMesh_pgvm0")
+
+[node name="Handle" type="MeshInstance3D" parent="." unique_id=1180051132]
+transform = Transform3D(1.15, 0, 0, 0, -5.9010375e-08, -1, 0, 1.35, -4.371139e-08, -0.19, 0.29, 0)
+mesh = SubResource("TorusMesh_l2qtu")
+
+[node name="SteamParticles" type="GPUParticles3D" parent="." unique_id=604067486]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0.45, 0)
+emitting = false
+amount = 40
+lifetime = 1.5
+randomness = 0.5
+process_material = SubResource("ParticleProcessMaterial_l2qtu")
+draw_pass_1 = SubResource("QuadMesh_fkk8u")
+
+[node name="SmokeParticles" type="GPUParticles3D" parent="." unique_id=641484020]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.48, 0)
+emitting = false
+amount = 55
+lifetime = 2.5
+randomness = 0.7
+process_material = SubResource("ParticleProcessMaterial_fkk8u")
+draw_pass_1 = SubResource("QuadMesh_pgvm0")
+
+[node name="OverflowLidParticles" type="GPUParticles3D" parent="." unique_id=1246770721]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.43, 0)
+emitting = false
+amount = 40
+lifetime = 1.5
+randomness = 0.5
+process_material = SubResource("ParticleProcessMaterial_xyd6x")
+draw_pass_1 = SubResource("QuadMesh_cetu4")
+
+[node name="OverflowSpoutParticles" type="GPUParticles3D" parent="." unique_id=282513289]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0.43, 0)
+emitting = false
+amount = 40
+lifetime = 1.5
+randomness = 0.5
+process_material = SubResource("ParticleProcessMaterial_spout")
+draw_pass_1 = SubResource("QuadMesh_pr2ay")
+
+[node name="KettleInteraction" type="StaticBody3D" parent="." unique_id=943320083]
+script = ExtResource("1_oy8w8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="KettleInteraction" unique_id=310987960]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.24, 0)
+shape = SubResource("CylinderShape3D_l2qtu")
