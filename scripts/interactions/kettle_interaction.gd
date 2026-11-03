@@ -17,6 +17,9 @@ signal water_spilled(amount: float)
 @export var cooling_speed: float = 3.0
 @export var evaporation_speed: float = 0.04
 @export var burn_temperature: float = 220.0
+@export var boiling_feedback_temperature: float = 99.0
+@export var whistle_volume_db: float = -8.0
+@export var whistle_max_distance: float = 8.0
 
 var temperature: float = 20.0
 var is_held: bool = false
@@ -32,6 +35,7 @@ var total_spilled_water: float = 0.0
 @onready var body_mesh: MeshInstance3D = $"../Body"
 @onready var steam_particles: GPUParticles3D = $"../SteamParticles"
 @onready var smoke_particles: GPUParticles3D = $"../SmokeParticles"
+@onready var whistle_player: AudioStreamPlayer3D = $"../WhistlePlayer"
 
 @onready var overflow_spout_particles: GPUParticles3D = \
 	$"../OverflowSpoutParticles"
@@ -60,6 +64,16 @@ func _ready() -> void:
 
 	steam_particles.emitting = false
 	smoke_particles.emitting = false
+	whistle_player.volume_db = whistle_volume_db
+	whistle_player.max_distance = whistle_max_distance
+
+	var whistle_stream: AudioStreamOggVorbis = (
+		whistle_player.stream as AudioStreamOggVorbis
+	)
+	if whistle_stream != null:
+		whistle_stream.loop = true
+
+	whistle_player.stop()
 	_update_visuals()
 
 
@@ -251,14 +265,33 @@ func _get_state_text() -> String:
 
 	return "Состояние: холодный"
 
+func _should_emit_boiling_feedback() -> bool:
+	return (
+		not is_burned
+		and water_liters > 0.0
+		and temperature >= boiling_feedback_temperature
+		and _is_being_heated()
+	)
+
+
+func _update_whistle(should_whistle: bool) -> void:
+	if should_whistle and not whistle_player.playing:
+		whistle_player.play()
+	elif not should_whistle and whistle_player.playing:
+		whistle_player.stop()
+
+
 func _update_visuals() -> void:
 	_update_body_color()
 
-	var should_emit_steam: bool = not is_burned and water_liters > 0.0 and temperature >= 99.0
+	var should_emit_boiling_feedback: bool = (
+		_should_emit_boiling_feedback()
+	)
 	var should_emit_smoke: bool = is_burned or temperature >= 180.0
 	var should_emit_overflow: bool = overflow_timer > 0.0
 
-	steam_particles.emitting = should_emit_steam
+	steam_particles.emitting = should_emit_boiling_feedback
+	_update_whistle(should_emit_boiling_feedback)
 	smoke_particles.emitting = should_emit_smoke
 
 	overflow_spout_particles.emitting = should_emit_overflow
