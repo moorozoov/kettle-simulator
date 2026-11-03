@@ -1,0 +1,22 @@
+# Godot 4 cache and editor-local state
+.godot/
+
+# Generated import metadata. Godot recreates it from source assets.
+*.import
+
+# Exported builds
+/build/
+/dist/
+/exports/
+/android/
+
+# Local IDE and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak

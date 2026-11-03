@@ -1,0 +1,20 @@
+# Normalize EOL for all files that Git considers text files.
+* text=auto eol=lf
+
+# Keep Godot and documentation files consistently readable in diffs.
+*.gd text eol=lf
+*.gdshader text eol=lf
+*.godot text eol=lf
+*.tres text eol=lf
+*.tscn text eol=lf
+*.md text eol=lf
+
+# Binary assets must never be line-ending normalized.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ogg binary
+*.wav binary
+*.glb binary
+*.blend binary
