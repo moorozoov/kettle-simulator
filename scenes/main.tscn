@@ -315,27 +315,27 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.327, -0.025, 0)
 mesh = SubResource("BoxMesh_sink_rim_short")
 
 [node name="Faucet" type="MeshInstance3D" parent="Sink" unique_id=1051509365]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.255, -0.28)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.215, -0.28)
 mesh = SubResource("CylinderMesh_fkk8u")
 
 [node name="FaucetBase" type="MeshInstance3D" parent="Sink"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0225, -0.28)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0175, -0.28)
 mesh = SubResource("CylinderMesh_faucet_base")
 
 [node name="FaucetArm" type="MeshInstance3D" parent="Sink"]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.465, -0.125)
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.425, -0.125)
 mesh = SubResource("CylinderMesh_faucet_arm")
 
 [node name="FaucetNozzle" type="MeshInstance3D" parent="Sink"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0.03)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.36, 0.03)
 mesh = SubResource("CylinderMesh_faucet_nozzle")
 
 [node name="FaucetAerator" type="MeshInstance3D" parent="Sink"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3225, 0.03)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2825, 0.03)
 mesh = SubResource("CylinderMesh_faucet_aerator")
 
 [node name="WaterStream" type="MeshInstance3D" parent="Sink" unique_id=2007514268]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.135, 0.03)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.095, 0.03)
 visible = false
 material_override = ExtResource("9_85g3d")
 mesh = SubResource("CylinderMesh_pgvm0")
