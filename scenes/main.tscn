@@ -18,15 +18,19 @@ size = Vector3(6, 0.1, 6)
 
 [sub_resource type="BoxMesh" id="BoxMesh_counter_left"]
 material = ExtResource("3_tipki")
-size = Vector3(0.25, 0.9, 0.7)
+size = Vector3(0.25, 0.08, 0.7)
 
 [sub_resource type="BoxMesh" id="BoxMesh_counter_right"]
 material = ExtResource("3_tipki")
-size = Vector3(2.05, 0.9, 0.7)
+size = Vector3(2.05, 0.08, 0.7)
 
 [sub_resource type="BoxMesh" id="BoxMesh_counter_sink_strip"]
 material = ExtResource("3_tipki")
-size = Vector3(0.7, 0.9, 0.075)
+size = Vector3(0.7, 0.08, 0.075)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cabinet_front"]
+material = ExtResource("3_tipki")
+size = Vector3(3, 0.82, 0.08)
 
 [sub_resource type="BoxMesh" id="BoxMesh_pgvm0"]
 material = ExtResource("4_85g3d")
@@ -69,7 +73,7 @@ size = Vector3(0.045, 0.025, 0.46)
 material = ExtResource("5_choun")
 top_radius = 0.035
 bottom_radius = 0.035
-height = 0.7
+height = 0.76
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_faucet_arm"]
 material = ExtResource("5_choun")
@@ -196,20 +200,24 @@ light_energy = 1.2
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
 
 [node name="LeftSection" type="MeshInstance3D" parent="Counter"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.375, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.375, 0.41, 0)
 mesh = SubResource("BoxMesh_counter_left")
 
 [node name="RightSection" type="MeshInstance3D" parent="Counter"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.475, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.475, 0.41, 0)
 mesh = SubResource("BoxMesh_counter_right")
 
 [node name="SinkBackStrip" type="MeshInstance3D" parent="Counter"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 0, -0.3125)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 0.41, -0.3125)
 mesh = SubResource("BoxMesh_counter_sink_strip")
 
 [node name="SinkFrontStrip" type="MeshInstance3D" parent="Counter"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 0, 0.3125)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 0.41, 0.3125)
 mesh = SubResource("BoxMesh_counter_sink_strip")
+
+[node name="CabinetFront" type="MeshInstance3D" parent="Counter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.04, 0.31)
+mesh = SubResource("BoxMesh_cabinet_front")
 
 [node name="CounterPlacement" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 0.94, 0.2)
@@ -281,7 +289,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.327, -0.025, 0)
 mesh = SubResource("BoxMesh_sink_rim_short")
 
 [node name="Faucet" type="MeshInstance3D" parent="Sink" unique_id=1051509365]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.38, -0.22)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.34, -0.22)
 mesh = SubResource("CylinderMesh_fkk8u")
 
 [node name="FaucetArm" type="MeshInstance3D" parent="Sink"]

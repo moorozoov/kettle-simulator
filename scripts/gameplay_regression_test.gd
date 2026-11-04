@@ -27,6 +27,7 @@ func _run() -> void:
 	var whistle: AudioStreamPlayer3D = kettle_root.get_node("WhistlePlayer") as AudioStreamPlayer3D
 	_check_whistle_structure(kettle_root, whistle)
 	_check_counter_placement(counter)
+	_check_counter_geometry(scene)
 	_check_sink_geometry(scene)
 
 	var stations: Array[StaticBody3D] = [counter, sink, burner]
@@ -204,6 +205,75 @@ func _check_counter_placement(counter: StaticBody3D) -> void:
 		"counter ray zone covers front surface only"
 	)
 
+func _check_counter_geometry(scene: Node) -> void:
+	var counter: MeshInstance3D = scene.get_node("Counter") as MeshInstance3D
+	_check(counter.mesh == null, "counter parent has no overlapping full cabinet mesh")
+	var fascia_nodes: Array[MeshInstance3D] = []
+	for child: Node in counter.get_children():
+		var part: MeshInstance3D = child as MeshInstance3D
+		if part == null or not part.mesh is BoxMesh:
+			continue
+		var box: BoxMesh = part.mesh as BoxMesh
+		if box.size.y > 0.2 and part.position.z > 0.25:
+			fascia_nodes.append(part)
+	_check(fascia_nodes.size() == 1, "counter has exactly one full-height front fascia")
+	if fascia_nodes.size() == 1:
+		var fascia: MeshInstance3D = fascia_nodes[0]
+		var fascia_mesh: BoxMesh = fascia.mesh as BoxMesh
+		_check(
+			is_equal_approx(fascia_mesh.size.x, 3.0)
+			and is_equal_approx(fascia.position.x, 0.0),
+			"single fascia continuously covers full counter width"
+		)
+
+	var top_names: Array[String] = [
+		"LeftSection",
+		"RightSection",
+		"SinkBackStrip",
+		"SinkFrontStrip"
+	]
+	var opening_min_x: float = -1.25
+	var opening_max_x: float = -0.55
+	var opening_min_z: float = -0.275
+	var opening_max_z: float = 0.275
+	for part_name: String in top_names:
+		var top_part: MeshInstance3D = counter.get_node(part_name) as MeshInstance3D
+		var top_mesh: BoxMesh = top_part.mesh as BoxMesh
+		_check(top_mesh.size.y <= 0.1, "%s is top-only geometry" % part_name)
+		var min_x: float = top_part.position.x - top_mesh.size.x * 0.5
+		var max_x: float = top_part.position.x + top_mesh.size.x * 0.5
+		var min_z: float = top_part.position.z - top_mesh.size.z * 0.5
+		var max_z: float = top_part.position.z + top_mesh.size.z * 0.5
+		var overlaps_open_x: bool = (
+			max_x > opening_min_x + 0.001
+			and min_x < opening_max_x - 0.001
+		)
+		var overlaps_open_z: bool = (
+			max_z > opening_min_z + 0.001
+			and min_z < opening_max_z - 0.001
+		)
+		_check(
+			not (overlaps_open_x and overlaps_open_z),
+			"%s does not obstruct sink opening" % part_name
+		)
+
+	if fascia_nodes.size() == 1:
+		var fascia_for_join: MeshInstance3D = fascia_nodes[0]
+		var fascia_join_mesh: BoxMesh = fascia_for_join.mesh as BoxMesh
+		var fascia_top: float = (
+			fascia_for_join.global_position.y
+			+ fascia_join_mesh.size.y * 0.5
+		)
+		var right_top: MeshInstance3D = counter.get_node("RightSection") as MeshInstance3D
+		var right_mesh: BoxMesh = right_top.mesh as BoxMesh
+		var countertop_bottom: float = (
+			right_top.global_position.y - right_mesh.size.y * 0.5
+		)
+		_check(
+			is_equal_approx(fascia_top, countertop_bottom),
+			"front fascia touches top without full-height overlap"
+		)
+
 func _check_sink_geometry(scene: Node) -> void:
 	var sink: MeshInstance3D = scene.get_node("Sink") as MeshInstance3D
 	var bottom: MeshInstance3D = sink.get_node("BasinInterior") as MeshInstance3D
@@ -214,6 +284,20 @@ func _check_sink_geometry(scene: Node) -> void:
 	_check(
 		bottom_top < sink.global_position.y - 0.1,
 		"sink bottom is recessed below counter top"
+	)
+	var faucet: MeshInstance3D = sink.get_node("Faucet") as MeshInstance3D
+	var faucet_mesh: CylinderMesh = faucet.mesh as CylinderMesh
+	var faucet_bottom: float = faucet.global_position.y - faucet_mesh.height * 0.5
+	var counter_top: MeshInstance3D = scene.get_node(
+		"Counter/RightSection"
+	) as MeshInstance3D
+	var counter_top_mesh: BoxMesh = counter_top.mesh as BoxMesh
+	var counter_surface: float = (
+		counter_top.global_position.y + counter_top_mesh.size.y * 0.5
+	)
+	_check(
+		absf(faucet_bottom - counter_surface) <= 0.001,
+		"faucet stand rests exactly on counter top"
 	)
 
 	for wall_name: String in [
