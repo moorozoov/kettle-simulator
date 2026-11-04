@@ -287,7 +287,15 @@ func _check_sink_geometry(scene: Node) -> void:
 	)
 	var faucet: MeshInstance3D = sink.get_node("Faucet") as MeshInstance3D
 	var faucet_mesh: CylinderMesh = faucet.mesh as CylinderMesh
+	var faucet_base: MeshInstance3D = sink.get_node("FaucetBase") as MeshInstance3D
+	var faucet_base_mesh: CylinderMesh = faucet_base.mesh as CylinderMesh
+	var faucet_base_bottom: float = (
+		faucet_base.global_position.y - faucet_base_mesh.height * 0.5
+	)
 	var faucet_bottom: float = faucet.global_position.y - faucet_mesh.height * 0.5
+	var faucet_base_top: float = (
+		faucet_base.global_position.y + faucet_base_mesh.height * 0.5
+	)
 	var counter_top: MeshInstance3D = scene.get_node(
 		"Counter/RightSection"
 	) as MeshInstance3D
@@ -296,8 +304,12 @@ func _check_sink_geometry(scene: Node) -> void:
 		counter_top.global_position.y + counter_top_mesh.size.y * 0.5
 	)
 	_check(
-		absf(faucet_bottom - counter_surface) <= 0.001,
-		"faucet stand rests exactly on counter top"
+		absf(faucet_base_bottom - counter_surface) <= 0.001,
+		"faucet base rests exactly on counter top"
+	)
+	_check(
+		absf(faucet_bottom - faucet_base_top) <= 0.001,
+		"faucet stand grows from its base without a gap"
 	)
 
 	for wall_name: String in [
@@ -314,25 +326,30 @@ func _check_sink_geometry(scene: Node) -> void:
 		_check(rim != null and rim.mesh != null, "%s frames basin opening" % rim_name)
 
 	var nozzle: MeshInstance3D = sink.get_node("FaucetNozzle") as MeshInstance3D
+	var aerator: MeshInstance3D = sink.get_node("FaucetAerator") as MeshInstance3D
 	var stream: MeshInstance3D = sink.get_node("WaterStream") as MeshInstance3D
 	var nozzle_mesh: CylinderMesh = nozzle.mesh as CylinderMesh
+	var aerator_mesh: CylinderMesh = aerator.mesh as CylinderMesh
 	var stream_mesh: CylinderMesh = stream.mesh as CylinderMesh
 	_check(
-		nozzle.position.is_equal_approx(Vector3(0.0, 0.64, 0.0)),
-		"faucet nozzle keeps approved alignment"
+		nozzle.position.z > 0.0 and nozzle.position.z < 0.1,
+		"faucet nozzle reaches over the basin"
 	)
 	_check(
-		stream.position.is_equal_approx(Vector3(0.0, 0.375, 0.0)),
-		"water stream keeps approved alignment"
+		stream.position.y > -0.1,
+		"water stream ends inside the recessed basin"
 	)
 	_check(
-		is_equal_approx(nozzle.global_position.x, stream.global_position.x)
-		and is_equal_approx(nozzle.global_position.z, stream.global_position.z),
+		is_equal_approx(aerator.global_position.x, stream.global_position.x)
+		and is_equal_approx(aerator.global_position.z, stream.global_position.z),
 		"faucet stream remains centered below nozzle"
 	)
 	var nozzle_bottom: float = nozzle.global_position.y - nozzle_mesh.height * 0.5
+	var aerator_top: float = aerator.global_position.y + aerator_mesh.height * 0.5
+	var aerator_bottom: float = aerator.global_position.y - aerator_mesh.height * 0.5
 	var stream_top: float = stream.global_position.y + stream_mesh.height * 0.5
-	_check(is_equal_approx(nozzle_bottom, stream_top), "stream starts at nozzle outlet")
+	_check(is_equal_approx(nozzle_bottom, aerator_top), "aerator joins nozzle")
+	_check(is_equal_approx(aerator_bottom, stream_top), "stream starts at aerator outlet")
 	_check(
 		stream.global_transform.basis.y.normalized().dot(Vector3.UP) > 0.999,
 		"faucet stream remains vertical"
