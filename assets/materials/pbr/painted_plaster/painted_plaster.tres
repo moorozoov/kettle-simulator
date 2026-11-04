@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" path="res://assets/materials/pbr/painted_plaster/painted_plaster_ao_1k.png" id="4_ao"]
 
 [resource]
-albedo_color = Color(0.91, 0.88, 0.84, 1)
+albedo_color = Color(0.94, 0.91, 0.86, 1)
 albedo_texture = ExtResource("1_albedo")
 roughness_texture = ExtResource("3_rough")
 normal_enabled = true
@@ -14,4 +14,4 @@ normal_scale = 0.25
 normal_texture = ExtResource("2_normal")
 ao_enabled = true
 ao_texture = ExtResource("4_ao")
-uv1_scale = Vector3(2, 2, 2)
+uv1_scale = Vector3(3, 2, 3)

@@ -145,6 +145,13 @@ func _is_being_heated() -> bool:
 
 	return current_station.is_heating()
 
+
+func _is_cooling() -> bool:
+	return (
+		not _is_being_heated()
+		and temperature > room_temperature + 1.0
+	)
+
 func _heat(delta: float) -> void:
 	if water_liters > 0.0:
 		if temperature < 100.0:
@@ -253,6 +260,12 @@ func _get_state_text() -> String:
 
 	if water_liters <= 0.0:
 		return "Состояние: пустой"
+
+	# Heating state is determined by the active station, not merely by a
+	# still-high temperature. Once removed from an active burner, a hot
+	# kettle is cooling even while the water remains near boiling.
+	if _is_cooling():
+		return "Состояние: остывает"
 
 	if temperature >= 100.0:
 		return "Состояние: вода кипит"
