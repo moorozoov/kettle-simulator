@@ -5,6 +5,7 @@
 [ext_resource type="Material" uid="uid://cw13lmpf2l22q" path="res://assets/materials/simple/black_plastic/black_plastic.tres" id="2_xyd6x"]
 [ext_resource type="Material" path="res://assets/materials/water/water_particles.tres" id="4_cetu4"]
 [ext_resource type="Material" uid="uid://dj17jf06gl6gu" path="res://assets/materials/water/water_universal.tres" id="4_xyd6x"]
+[ext_resource type="AudioStream" path="res://assets/audio/kettle_whistle/kettle_whistle_loop.ogg" id="5_whistle"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_l2qtu"]
 material = ExtResource("1_wwbax")
@@ -107,6 +108,24 @@ size = Vector2(0.035, 0.07)
 height = 0.26
 radius = 0.48
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_whistle_cap"]
+material = ExtResource("1_wwbax")
+top_radius = 0.06
+bottom_radius = 0.073
+height = 0.055
+radial_segments = 24
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_whistle_opening"]
+material = ExtResource("2_xyd6x")
+top_radius = 0.047
+bottom_radius = 0.047
+height = 0.008
+radial_segments = 24
+
+[sub_resource type="BoxMesh" id="BoxMesh_whistle_lever"]
+material = ExtResource("2_xyd6x")
+size = Vector3(0.025, 0.1, 0.025)
+
 [node name="Kettle" type="Node3D" unique_id=70286665]
 
 [node name="Body" type="MeshInstance3D" parent="." unique_id=924083375]
@@ -124,6 +143,18 @@ mesh = SubResource("SphereMesh_l2qtu")
 [node name="Spout" type="MeshInstance3D" parent="." unique_id=1945743882]
 transform = Transform3D(0.49999997, 0.86602545, 0, -0.86602545, 0.49999997, 0, 0, 0, 1, 0.25, 0.29, 0)
 mesh = SubResource("CylinderMesh_pgvm0")
+
+[node name="WhistleCap" type="MeshInstance3D" parent="Spout"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.185, 0)
+mesh = SubResource("CylinderMesh_whistle_cap")
+
+[node name="WhistleOpening" type="MeshInstance3D" parent="Spout"]
+transform = Transform3D(1, 0, 0, 0, -1, 0, 0, 0, -1, 0, -0.216, 0)
+mesh = SubResource("CylinderMesh_whistle_opening")
+
+[node name="WhistleLever" type="MeshInstance3D" parent="Spout"]
+transform = Transform3D(0.8660254, -0.5, 0, 0.5, 0.8660254, 0, 0, 0, 1, 0.075, -0.18, 0)
+mesh = SubResource("BoxMesh_whistle_lever")
 
 [node name="Handle" type="MeshInstance3D" parent="." unique_id=1180051132]
 transform = Transform3D(1.15, 0, 0, 0, -5.9010375e-08, -1, 0, 1.35, -4.371139e-08, -0.19, 0.29, 0)
@@ -164,6 +195,12 @@ lifetime = 1.5
 randomness = 0.5
 process_material = SubResource("ParticleProcessMaterial_spout")
 draw_pass_1 = SubResource("QuadMesh_pr2ay")
+
+[node name="WhistlePlayer" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("5_whistle")
+autoplay = false
+volume_db = -20.0
+max_distance = 5.0
 
 [node name="KettleInteraction" type="StaticBody3D" parent="." unique_id=943320083]
 script = ExtResource("1_oy8w8")

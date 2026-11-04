@@ -106,7 +106,8 @@ func _update_interaction() -> void:
 
 	if not interaction_ray.is_colliding():
 		if held_kettle != null:
-			interaction_prompt.text = "Наведите прицел на плиту или раковину"
+			interaction_prompt.text = \
+				"Наведите прицел на плиту, раковину или столешницу"
 			interaction_prompt.show()
 		return
 
@@ -123,7 +124,8 @@ func _update_interaction() -> void:
 				interaction_prompt.show()
 			return
 
-		interaction_prompt.text = "Наведите прицел на плиту или раковину"
+		interaction_prompt.text = \
+			"Наведите прицел на плиту, раковину или столешницу"
 		interaction_prompt.show()
 		return
 

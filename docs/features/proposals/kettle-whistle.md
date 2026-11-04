@@ -1,137 +1,154 @@
-# Feature proposal — Kettle whistle and audio feedback
+# Feature proposal — Physical kettle whistle and complete boiling loop
 
-**Status:** In review  
-**Revision:** 1  
-**Priority:** P0  
-**Estimated size:** M  
+**Status:** Approved
+**Revision:** 2
+**Priority:** P0
+**Estimated size:** L
 **Roadmap:** M1 — Readable Feedback
 
-## Summary
+## Approval record
 
-Добавить пространственный свист чайника, который сообщает о кипении без чтения HUD и прекращается при любом состоянии, в котором чайник больше не должен свистеть.
-
-Эта спецификация не разрешает разработку до явного одобрения Revision 1 пользователем.
+Revision 2 follows the user's explicit corrective requirements: add a visible
+whistle, let the player place the kettle after pickup, replace the loud sound,
+and move repetitive testing from the owner to QA.
 
 ## Problem and value
 
-Сейчас момент кипения читается главным образом по HUD и пару. Если игрок смотрит в другую сторону, ключевой момент легко пропустить. Свист:
-
-- делает причинно-следственную связь понятнее;
-- подсказывает, что пора действовать;
-- усиливает узнаваемость и комедийный характер чайника;
-- создаёт основу для первой игровой цели.
+Revision 1 added audio but not a complete experience. The kettle has no visible
+whistle, the player can pick it up after boiling but cannot place it on a useful
+surface, and the reference sound is too loud. Revision 2 makes the sound source
+visible and completes the scenario `boil → pick up → place`.
 
 ## User story
 
-Как игрок, я слышу, что вода закипела, даже если не смотрю на чайник, и понимаю, что могу выключить плиту, снять чайник либо сознательно оставить ситуацию ухудшаться.
+As a player, I can see the whistle on the spout, hear a moderate realistic
+signal, pick the kettle up and place it on a valid surface without a dead end.
 
 ## Main scenario
 
-1. В чайнике есть вода.
-2. Чайник стоит на активной конфорке.
-3. Температура достигает порога кипения.
-4. Появляются пар и зацикленный свист.
-5. Свист продолжается, пока чайник нагревается и в нём есть вода.
-6. Выключение конфорки, снятие, долив холодной воды, выкипание или сгорание прекращает свист.
-7. Повторное достижение условий запускает один экземпляр свиста.
+1. The filled kettle stands on an active burner.
+2. At 99 °C steam and one moderate whistle start together.
+3. A physical metal whistle is visible on the end of the spout.
+4. Picking the kettle up stops steam and audio immediately.
+5. The player aims at a valid free placement zone and sees a short prompt.
+6. The kettle is placed stably and becomes interactable again.
+7. Returning it to an active burner starts one whistle when conditions are true.
 
 ## Scope
 
-- один `AudioStreamPlayer3D` в сцене чайника;
-- один лицензированный loop свистка, предпочтительно CC0;
-- единый predicate для пара и свиста;
-- экспортируемые порог температуры, громкость и радиус слышимости;
-- короткий fade для старта/остановки, если он нужен для отсутствия щелчков;
-- естественное затухание по расстоянию;
-- запись ассета в `LICENSES.md`.
+### Physical whistle
+
+- one visible classic metal whistle cap on the spout;
+- Godot primitives or a license-safe asset;
+- reuse the existing stainless-steel material;
+- keep it under the kettle root so it moves with the kettle;
+- no opening animation in Revision 2.
+
+### Placement
+
+- approved targets: burner, sink area and countertop;
+- placement only in a valid free zone;
+- concise prompt that does not cover the crosshair;
+- restore transform, collision and interaction after placement;
+- assign a station only for a functional burner or sink target;
+- countertop placement must neither heat nor fill the kettle.
+
+### Audio
+
+- replace the harsh procedural reference with a softer realistic sound;
+- one `AudioStreamPlayer3D` and one loop;
+- default volume: `-20 dB`;
+- default maximum distance: `5 m`;
+- no seam, click, duplicate playback or volume growth;
+- stop within one physics frame after heat off, pickup, refill below threshold,
+  empty water or burned state;
+- record source, license, modifications and local path for external assets.
+
+### QA ownership
+
+- QA runs repeated pickup/place, burner-toggle and restart cycles;
+- automated or agent-run checks cover state transitions and regressions;
+- the owner is not assigned repetitive stress tests.
 
 ## Out of scope
 
-- полная звуковая система кухни;
-- несколько моделей свистков;
-- пользовательские настройки громкости;
-- анимация крышки;
-- изменение скорости нагрева/испарения;
-- scoring, задания и достижения.
+- animated whistle opening;
+- free throwing or arbitrary placement on all geometry;
+- realistic center-of-mass simulation;
+- countertop heat damage;
+- multiple whistle models or selectable sounds;
+- cup pouring, recipes, scoring and missions.
 
-## Acceptance criteria
+## Functional acceptance criteria
 
-1. Свист начинается, только если:
-   - температура не ниже экспортируемого порога, по умолчанию 99 °C;
-   - воды больше 0;
-   - чайник активно нагревается;
-   - чайник не сгорел.
-2. Свист не начинается у пустого, снятого, не нагреваемого или сгоревшего чайника.
-3. Свист прекращается максимум за один кадр после:
-   - выключения конфорки;
-   - снятия чайника;
-   - полного выкипания;
-   - сгорания;
-   - долива воды, снизившего температуру ниже порога.
-4. Пар и свист используют одно условие кипения и не расходятся по состоянию.
-5. Быстрые снятия, возвраты и переключения конфорки не создают несколько копий звука.
-6. Звук слышен у плиты и естественно затухает с расстоянием.
-7. Повторная постановка горячего чайника запускает один loop, если все условия снова выполнены.
-8. Существующие нагрев, перелив, проливы, затопление и сгорание не меняются.
-9. Аудиоассет имеет допустимую лицензию и запись в `LICENSES.md`.
-10. CI и ручной playtest проходят.
+1. The whistle is visible from the normal camera and stays attached during
+   pickup and placement.
+2. Steam and audio start only with water, at least 99 °C, active heat and a
+   non-burned kettle.
+3. Audio defaults to `-20 dB` and `5 m` maximum distance.
+4. Audio stops within one physics frame after every stop condition.
+5. Repeated transitions never create more than one playing source.
+6. The kettle can be placed on burner, sink area and countertop targets.
+7. Invalid or occupied targets reject placement.
+8. Collision and interaction return after successful placement.
+9. Burner placement heats, sink placement fills and countertop placement does
+   neither.
+10. Overflow, puddles, flooding, evaporation and burning remain unchanged.
 
-## Edge cases
+## PO acceptance
 
-- последняя вода выкипает между кадрами;
-- чайник снимают и сразу возвращают;
-- конфорку быстро переключают;
-- холодную воду доливают в кипящий чайник;
-- сцена запускается с температурой выше порога;
-- чайник сгорает после полного выкипания;
-- источник звука уже играет при смене station.
+- The visible whistle explains the source of the sound.
+- The sound is audible near the stove but does not dominate the scene.
+- The scenario `boil → pick up → place` has no dead end.
+- Placement is understandable without developer guidance.
+- Returning the kettle to the burner behaves predictably.
 
-## Dependencies
+## PM acceptance
 
-- закрытый M0 / PR #2;
-- одобрение этой Revision 1;
-- выбор лицензированного звука;
-- существующие `current_station`, temperature/water state и steam particles.
+- Physical whistle, placement and audio are separate tracked deliverables.
+- CI, independent QA and review have no blocker/high/medium findings.
+- Audio origin and license are recorded when applicable.
+- QA evidence includes x10 runs and regression coverage.
+- Owner acceptance contains no more than three short sensory actions.
+- Merge requires separate explicit approval from the owner.
+
+## QA-owned test scenarios
+
+QA must execute and record:
+
+- 10 pickup/place cycles on the burner;
+- 10 pickup/place cycles on the countertop;
+- 10 rapid burner toggles;
+- sink placement and return to the burner;
+- invalid and occupied target rejection;
+- collision and interaction after every placement;
+- one audio source without volume growth or delayed playback;
+- cold refill, evaporation to zero and burned state;
+- five scene restarts without stale audio or duplicated signals;
+- overflow, faucet, puddle and flooding regression.
+
+Automation should cover the boiling predicate, idempotent audio state, station
+assignment/clearing, placement validation, collision restoration and repeated
+transitions.
+
+## Owner acceptance — maximum three actions
+
+1. Boil water once and assess the visible whistle and sound level.
+2. Pick the kettle up and place it on the countertop.
+3. Return it to the burner and confirm feedback resumes as expected.
 
 ## Risks and mitigations
 
-| Риск | Митигация |
+| Risk | Mitigation |
 |---|---|
-| Раздражающий loop | Предложить 2–3 ассета, проверить 2–3 полных цикла |
-| Щелчок на старте/стопе | Бесшовный loop и короткий fade |
-| Пар и звук расходятся | Одна функция состояния кипения |
-| Наложение звуков | Один player и idempotent play/stop |
-| Звук слышен слишком далеко | Настраиваемые attenuation/range |
-| Лицензия не подходит для Steam | CC0-first, проверка и запись в том же PR |
-
-## Work breakdown
-
-1. Product: закрыть открытые решения.
-2. Designer: предложить 2–3 лицензированных звука с источниками.
-3. User: выбрать характер свиста.
-4. Developer: реализовать player, predicate и exported tuning.
-5. QA: пройти все переходы состояния и регрессии.
-6. Reviewer: проверить node paths, лицензию и отсутствие дубликатов.
-7. User: выполнить ручную аудиоприёмку.
-8. Lead: merge только после отдельного разрешения.
-
-## Manual playtest
-
-- нагреть заполненный чайник до порога — свист и пар начинаются вместе;
-- выключить плиту — свист прекращается;
-- снова включить — свист возвращается только при выполненных условиях;
-- снять и быстро вернуть чайник — нет наложения;
-- долить холодную воду — свист прекращается до повторного кипения;
-- дать воде выкипеть и чайнику сгореть — свист отсутствует;
-- отойти от плиты — громкость естественно снижается;
-- повторить цикл 2–3 раза — loop не раздражает и не щёлкает.
+| Whistle model is unreadable | Review from the normal gameplay camera |
+| Sound remains harsh | Softer source, `-20 dB`, `5 m`, designer listening gate |
+| Placement leaves stale station | Central transition and automated assertions |
+| Kettle becomes non-interactable | Restore collision/state in one method |
+| Audio stacks | One player and idempotent play/stop |
+| Scope expands | Restrict placement to three discrete target zones |
 
 ## Success signal
 
-На playtest игрок, не глядя на HUD, правильно определяет момент кипения и называет действие, которое прекращает свист.
-
-## Open decisions for user
-
-1. Характер свиста: реалистичный, мягкий или намеренно комедийный?
-2. Свист прекращается сразу после выключения плиты или коротко затухает?
-3. Нужно ли полностью синхронизировать старт пара и звука на одном пороге 99 °C?
+The owner completes the three-action acceptance without a dead end, while QA
+evidence proves repeated transitions and regression coverage.

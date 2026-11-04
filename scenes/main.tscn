@@ -10,14 +10,27 @@
 [ext_resource type="Script" uid="uid://b448cwbimet2q" path="res://scenes/sink_interaction.gd" id="8_tipki"]
 [ext_resource type="Material" uid="uid://dj17jf06gl6gu" path="res://assets/materials/water/water_universal.tres" id="9_85g3d"]
 [ext_resource type="Material" path="res://assets/materials/pbr/painted_plaster/painted_plaster.tres" id="10_choun"]
+[ext_resource type="Script" path="res://scripts/interactions/kettle_placement_interaction.gd" id="11_counter_place"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_l2qtu"]
 material = ExtResource("2_o6xl0")
 size = Vector3(6, 0.1, 6)
 
-[sub_resource type="BoxMesh" id="BoxMesh_fkk8u"]
+[sub_resource type="BoxMesh" id="BoxMesh_counter_left"]
 material = ExtResource("3_tipki")
-size = Vector3(3, 0.9, 0.7)
+size = Vector3(0.25, 0.08, 0.7)
+
+[sub_resource type="BoxMesh" id="BoxMesh_counter_right"]
+material = ExtResource("3_tipki")
+size = Vector3(2.05, 0.08, 0.7)
+
+[sub_resource type="BoxMesh" id="BoxMesh_counter_sink_strip"]
+material = ExtResource("3_tipki")
+size = Vector3(0.7, 0.08, 0.075)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cabinet_front"]
+material = ExtResource("3_tipki")
+size = Vector3(3, 0.82, 0.08)
 
 [sub_resource type="BoxMesh" id="BoxMesh_pgvm0"]
 material = ExtResource("4_85g3d")
@@ -30,18 +43,73 @@ bottom_radius = 0.23
 height = 0.025
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_l2qtu"]
-height = 0.23
-radius = 0.04
+height = 0.08
+radius = 0.23
 
-[sub_resource type="BoxMesh" id="BoxMesh_pdowp"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_counter_place"]
+size = Vector3(0.8, 0.16, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_sink_basin"]
 material = ExtResource("5_choun")
-size = Vector3(0.7, 0.08, 0.55)
+size = Vector3(0.57, 0.035, 0.42)
+
+[sub_resource type="BoxMesh" id="BoxMesh_sink_inner_long"]
+material = ExtResource("5_choun")
+size = Vector3(0.57, 0.18, 0.035)
+
+[sub_resource type="BoxMesh" id="BoxMesh_sink_inner_short"]
+material = ExtResource("5_choun")
+size = Vector3(0.035, 0.18, 0.42)
+
+[sub_resource type="BoxMesh" id="BoxMesh_sink_rim_long"]
+material = ExtResource("5_choun")
+size = Vector3(0.7, 0.025, 0.045)
+
+[sub_resource type="BoxMesh" id="BoxMesh_sink_rim_short"]
+material = ExtResource("5_choun")
+size = Vector3(0.045, 0.025, 0.46)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_fkk8u"]
 material = ExtResource("5_choun")
 top_radius = 0.035
 bottom_radius = 0.035
-height = 0.7
+height = 0.42
+radial_segments = 24
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_faucet_base"]
+material = ExtResource("5_choun")
+top_radius = 0.065
+bottom_radius = 0.075
+height = 0.045
+radial_segments = 24
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_faucet_arm"]
+material = ExtResource("5_choun")
+top_radius = 0.035
+bottom_radius = 0.035
+height = 0.31
+radial_segments = 24
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_faucet_nozzle"]
+material = ExtResource("5_choun")
+top_radius = 0.035
+bottom_radius = 0.035
+height = 0.13
+radial_segments = 24
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_faucet_aerator"]
+material = ExtResource("4_85g3d")
+top_radius = 0.041
+bottom_radius = 0.041
+height = 0.025
+radial_segments = 24
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_sink_drain"]
+material = ExtResource("4_85g3d")
+top_radius = 0.055
+bottom_radius = 0.055
+height = 0.008
+radial_segments = 32
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_pgvm0"]
 material = ExtResource("9_85g3d")
@@ -152,7 +220,36 @@ light_energy = 1.2
 
 [node name="Counter" type="MeshInstance3D" parent="." unique_id=635066553]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
-mesh = SubResource("BoxMesh_fkk8u")
+
+[node name="LeftSection" type="MeshInstance3D" parent="Counter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.375, 0.41, 0)
+mesh = SubResource("BoxMesh_counter_left")
+
+[node name="RightSection" type="MeshInstance3D" parent="Counter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.475, 0.41, 0)
+mesh = SubResource("BoxMesh_counter_right")
+
+[node name="SinkBackStrip" type="MeshInstance3D" parent="Counter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 0.41, -0.3125)
+mesh = SubResource("BoxMesh_counter_sink_strip")
+
+[node name="SinkFrontStrip" type="MeshInstance3D" parent="Counter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 0.41, 0.3125)
+mesh = SubResource("BoxMesh_counter_sink_strip")
+
+[node name="CabinetFront" type="MeshInstance3D" parent="Counter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.04, 0.31)
+mesh = SubResource("BoxMesh_cabinet_front")
+
+[node name="CounterPlacement" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 0.94, 0.2)
+script = ExtResource("11_counter_place")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CounterPlacement"]
+shape = SubResource("BoxShape3D_counter_place")
+
+[node name="KettlePoint" type="Marker3D" parent="CounterPlacement"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.06, -0.1)
 
 [node name="Stove" type="MeshInstance3D" parent="." unique_id=1635088889]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.94, 0)
@@ -173,17 +270,72 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.015, 0)
 
 [node name="Sink" type="MeshInstance3D" parent="." unique_id=2075283334]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 0.94, 0)
-mesh = SubResource("BoxMesh_pdowp")
 
 [node name="KettlePoint" type="Marker3D" parent="Sink" unique_id=191558176]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06999999, 0)
 
+[node name="BasinInterior" type="MeshInstance3D" parent="Sink"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.22, 0)
+mesh = SubResource("BoxMesh_sink_basin")
+
+[node name="Drain" type="MeshInstance3D" parent="Sink"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.198, 0)
+mesh = SubResource("CylinderMesh_sink_drain")
+
+[node name="BasinWallFront" type="MeshInstance3D" parent="Sink"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.13, 0.21)
+mesh = SubResource("BoxMesh_sink_inner_long")
+
+[node name="BasinWallBack" type="MeshInstance3D" parent="Sink"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.13, -0.21)
+mesh = SubResource("BoxMesh_sink_inner_long")
+
+[node name="BasinWallLeft" type="MeshInstance3D" parent="Sink"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.285, -0.13, 0)
+mesh = SubResource("BoxMesh_sink_inner_short")
+
+[node name="BasinWallRight" type="MeshInstance3D" parent="Sink"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.285, -0.13, 0)
+mesh = SubResource("BoxMesh_sink_inner_short")
+
+[node name="RimFront" type="MeshInstance3D" parent="Sink"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.025, 0.252)
+mesh = SubResource("BoxMesh_sink_rim_long")
+
+[node name="RimBack" type="MeshInstance3D" parent="Sink"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.025, -0.252)
+mesh = SubResource("BoxMesh_sink_rim_long")
+
+[node name="RimLeft" type="MeshInstance3D" parent="Sink"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.327, -0.025, 0)
+mesh = SubResource("BoxMesh_sink_rim_short")
+
+[node name="RimRight" type="MeshInstance3D" parent="Sink"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.327, -0.025, 0)
+mesh = SubResource("BoxMesh_sink_rim_short")
+
 [node name="Faucet" type="MeshInstance3D" parent="Sink" unique_id=1051509365]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.37999994, -0.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.215, -0.28)
 mesh = SubResource("CylinderMesh_fkk8u")
 
+[node name="FaucetBase" type="MeshInstance3D" parent="Sink"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0175, -0.28)
+mesh = SubResource("CylinderMesh_faucet_base")
+
+[node name="FaucetArm" type="MeshInstance3D" parent="Sink"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.425, -0.125)
+mesh = SubResource("CylinderMesh_faucet_arm")
+
+[node name="FaucetNozzle" type="MeshInstance3D" parent="Sink"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.36, 0.03)
+mesh = SubResource("CylinderMesh_faucet_nozzle")
+
+[node name="FaucetAerator" type="MeshInstance3D" parent="Sink"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2825, 0.03)
+mesh = SubResource("CylinderMesh_faucet_aerator")
+
 [node name="WaterStream" type="MeshInstance3D" parent="Sink" unique_id=2007514268]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.095, 0.03)
 visible = false
 material_override = ExtResource("9_85g3d")
 mesh = SubResource("CylinderMesh_pgvm0")

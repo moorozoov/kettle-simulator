@@ -9,38 +9,29 @@ Only user-confirmed dates are commitments. Feature approval status is tracked se
 
 | Work item | Product status | Delivery status | Owner role | Confirmed target | Dependencies | PR | Blocker | Next action |
 |---|---|---|---|---|---|---|---|---|
-| Smooth flood progression | Legacy scope | In review | Lead / QA / User | — | Explicit merge approval | [#2](https://github.com/moorozoov/kettle-simulator/pull/2) | No technical blocker: CI green and manual playtest passed | User explicitly authorizes or declines merge |
-| Product roadmap and delivery plan | In review, Revision 1 | In review | Product / Project | — | User review | Documentation PR | No blocker | Review priorities, risks and open decisions |
-| Kettle whistle | In review, Revision 1 | Planned | Product / Designer | — | Approved specification; licensed audio; M0 complete | — | User approval required | User reviews proposal; no development before `Approved` |
-
-## Upcoming decisions
-
-1. Explicitly approve or decline merge of PR #2.
-2. Review roadmap order: whistle → first goal → cup.
-3. Choose intended tone: household realism, absurd comedy, or a balance.
-4. Decide whether failure ends a run or allows the catastrophe to continue.
-5. Review open decisions in the whistle proposal.
-6. Confirm dates only after an approved scope and dependency review.
+| Physical whistle and complete boiling loop | Approved, Revision 2 | In progress | Product / Designer / Developer / QA | — | Softer audio; discrete placement targets | PR #6 revision required | Owner rejected Revision 1: no physical whistle, placement dead end, loud sound, excessive owner QA | Add physical whistle, replace audio, implement burner/sink/countertop placement and QA-owned x10 runs |
+| First playable goal | Roadmap approved; proposal pending | Planned | Product / Project | — | M1 complete | — | Detailed Revision 1 required | Prepare proposal while M1 is in review |
 
 ## Completed milestones
 
-- Repository and semantic versioning initialized.
-- Closed room geometry added.
-- Codex product, development, QA and PR-review workflow configured.
-- Project manager and visual designer roles added through merged PR #4.
-- PR #2 reconciled with `main`; automated checks and user manual playtest completed.
+- M0 Stable Simulation completed.
+- PR #2 merged as commit `f478da53` after CI and user manual acceptance.
+- Closed room geometry and stable flood progression added.
+- Agent workflow, project manager and visual designer roles configured.
+- Product roadmap Revision 1 approved by the user.
 
 ## Current forecast
 
-- **M0 Stable Simulation:** ready for merge decision; no confirmed target date.
-- **M1 Readable Feedback:** proposed, not approved.
-- **M2 First Playable Goal:** planned after M1, specification not yet created.
-- No schedule commitment exists.
+- **M1 Readable Feedback:** at risk while Revision 2 corrective work is in progress; no confirmed target date.
+- **M2 First Playable Goal:** planned after M1; proposal to be prepared.
+- No calendar commitment exists.
 
-## Status update rules
+## Next gates
 
-- **Planned:** approved or sequenced work not started.
-- **In progress:** implementation is active.
-- **Blocked:** a dependency or decision prevents progress.
-- **In review:** automated, agent, user or product review is pending.
-- **Done:** merged and verified.
+1. Add a visible metal whistle on the spout.
+2. Replace the loud reference with a softer sound at `-20 dB` and `5 m`.
+3. Implement valid placement on burner, sink area and countertop.
+4. QA runs automated/agent-owned x10 pickup, placement and toggle scenarios.
+5. CI, independent QA and PR review.
+6. Owner performs only three short acceptance actions.
+7. Explicit owner merge approval.
