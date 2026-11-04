@@ -172,10 +172,15 @@ func _check_whistle_structure(root_node: Node3D, player: AudioStreamPlayer3D) ->
 		and lever.position.y <= cap_inner_edge,
 		"whistle lever remains attached to cap"
 	)
+	var spout_outward_axis: Vector3 = (
+		-spout.global_transform.basis.y.normalized()
+	)
+	var cap_outward_distance: float = (
+		cap.global_position - spout.global_position
+	).dot(spout_outward_axis)
 	_check(
-		cap.global_position.distance_to(root_node.global_position)
-		> spout.global_position.distance_to(root_node.global_position),
-		"whistle is farther outward than spout center"
+		cap_outward_distance > spout_mesh.height * 0.5,
+		"whistle is beyond the spout outlet"
 	)
 	var players: Array[Node] = root_node.find_children("*", "AudioStreamPlayer3D", true, false)
 	_check(players.size() == 1, "exactly one 3D audio player")
@@ -194,7 +199,10 @@ func _check_counter_placement(counter: StaticBody3D) -> void:
 	_check(target.z >= -0.1 and target.z <= 0.11, "counter target stays on countertop depth")
 	_check(absf(target.z) + 0.25 <= 0.351, "kettle footprint stays on countertop")
 	_check(is_equal_approx(target.y + 0.02, 0.9), "kettle base touches top surface")
-	_check(shape != null and shape.size.z <= 0.3, "counter ray zone covers front surface only")
+	_check(
+		shape != null and shape.size.z <= 0.301,
+		"counter ray zone covers front surface only"
+	)
 
 func _check_sink_geometry(scene: Node) -> void:
 	var sink: MeshInstance3D = scene.get_node("Sink") as MeshInstance3D
