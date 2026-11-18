@@ -11,6 +11,7 @@
 [ext_resource type="Material" uid="uid://dj17jf06gl6gu" path="res://assets/materials/water/water_universal.tres" id="9_85g3d"]
 [ext_resource type="Material" path="res://assets/materials/pbr/painted_plaster/painted_plaster.tres" id="10_choun"]
 [ext_resource type="Script" path="res://scripts/interactions/kettle_placement_interaction.gd" id="11_counter_place"]
+[ext_resource type="Script" path="res://scripts/systems/session_controller.gd" id="12_session"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_l2qtu"]
 material = ExtResource("2_o6xl0")
@@ -199,6 +200,9 @@ material = ExtResource("9_85g3d")
 size = Vector3(5.9, 1, 5.9)
 
 [node name="Main" type="Node3D" unique_id=1951759335]
+
+[node name="SessionController" type="Node" parent="."]
+script = ExtResource("12_session")
 
 [node name="PlayerCamera" type="Camera3D" parent="." unique_id=1273047717]
 transform = Transform3D(1, 0, 0, 0, 0.9781476, 0.2079117, 0, -0.2079117, 0.9781476, 0, 1.65, 2.7)
@@ -417,6 +421,66 @@ theme_override_font_sizes/font_size = 28
 text = "+"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="GoalHint" type="Label" parent="UI"]
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 604.0
+offset_bottom = 76.0
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 22
+text = "Наполни чайник и безопасно вскипяти воду"
+
+[node name="ResultOverlay" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="ColorRect" parent="UI/ResultOverlay"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -230.0
+offset_top = -105.0
+offset_right = 230.0
+offset_bottom = 105.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.035, 0.04, 0.05, 0.94)
+
+[node name="Content" type="VBoxContainer" parent="UI/ResultOverlay/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = 24.0
+offset_right = -28.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 22
+alignment = 1
+
+[node name="ResultLabel" type="Label" parent="UI/ResultOverlay/Panel/Content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Результат попытки"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RestartButton" type="Button" parent="UI/ResultOverlay/Panel/Content"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Начать заново [R]"
 
 [node name="RoomGeometry" type="Node3D" parent="."]
 
