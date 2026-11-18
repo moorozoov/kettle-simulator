@@ -42,6 +42,13 @@ echo "Running automated gameplay regression checks..."
   --path "${project_dir}" \
   --script res://scripts/gameplay_regression_test.gd
 
+echo "Running first playable session regression checks..."
+"${godot_command}" \
+  --headless \
+  --audio-driver Dummy \
+  --path "${project_dir}" \
+  --script res://scripts/session_regression_test.gd
+
 echo "Godot project check passed."
 
 
